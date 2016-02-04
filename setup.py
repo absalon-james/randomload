@@ -1,6 +1,6 @@
 from setuptools import setup
 
-from nandy.meta import version
+from randomload.meta import version
 
 setup(
     name="randomload",

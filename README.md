@@ -1,4 +1,4 @@
-# nandy
+# randomload
 
 ## Installation
 ```shell
@@ -8,7 +8,7 @@ python setup.py install
 ```
 
 ## Configuration
-The default location for the nandy yaml configuration is /etc/randomload/randomload.yaml.
+The default location for the randomload yaml configuration is /etc/randomload/randomload.yaml.
 This can be changed with the command line argument '--config-file'.
 
 ```yaml
