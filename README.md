@@ -5,6 +5,7 @@
 git clone https://github.com/absalon-james/randomload.git
 cd randomload
 python setup.py install
+```
 
 ## Configuration
 The default location for the nandy yaml configuration is /etc/randomload/randomload.yaml.
