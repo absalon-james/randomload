@@ -1,0 +1,20 @@
+auth_url: http://auth_url:5000/v2.0
+username: yourusername
+password: yourpassword
+project_id: your_tenant_or_project_id
+
+# Time in seconds between each action
+interval: 60
+
+# List images to be randomized by their uuids.
+# These will be different in each environment.
+images:
+  # cirros-0.3.4-x86_64-uec
+  - cad2b613-76ca-4abe-965e-0afb77283ed0
+
+# List flavors to be randomized by their ids
+flavors:
+  # m1.tiny
+  - '1'
+  # m1.small
+  - '2'
