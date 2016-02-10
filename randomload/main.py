@@ -8,32 +8,12 @@ from novaclient import client as novaclient
 import time
 import utils
 
-from actions.nova import delete as server_delete
-from actions.nova import create as server_create
 from actions.glance import create as image_create
 from actions.glance import delete as image_delete
+from actions.nova import delete as server_delete
+from actions.nova import create as server_create
 
 logger = logging.getLogger('randomload')
-
-
-def get_nova(auth_url=None, username=None, password=None, project_id=None):
-    """Get nova client.
-
-    :param auth_url: String keystone auth url
-    :param username: String openstack username
-    :param password: String openstack password
-    :param project_id: String project_id - Tenant uuid
-    :returns: novaclient.client.Client
-    """
-    loader = loading.get_plugin_loader('password')
-    auth = loader.load_from_options(
-        auth_url=auth_url,
-        username=username,
-        password=password,
-        project_id=project_id
-    )
-    sess = session.Session(auth=auth)
-    return novaclient.Client('2.1', session=sess)
 
 
 def run():

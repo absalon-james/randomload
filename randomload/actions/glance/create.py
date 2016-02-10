@@ -24,18 +24,19 @@ def create(clients, conf=None):
         disk_format=imagedict.get('disk_format'),
         container_format=imagedict.get('container_format')
     )
-    logger.info("Created image")
 
     glance.images.upload(image.id, open(imagedict.get('file'), 'rb'))
-    logger.info("Uploading image")
 
     # Add a tag to identify image as one created by randomload
     tag = 'randomload'
     glance.image_tags.update(image.id, 'randomload')
-    logger.info("Added tag {0}".format(tag))
 
     # Randomly sample from available random tags
     extra_tags = utils.randomsample(glance_conf.get('tags', []), 2)
     for t in extra_tags:
         glance.image_tags.update(image.id, t)
-        logger.info("Added tag {0}".format(t))
+
+    logger.info(
+        "Created image {0} with tags {1}"
+        .format(image.name, extra_tags + ['randomload'])
+    )
