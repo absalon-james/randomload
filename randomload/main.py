@@ -1,13 +1,12 @@
 from args import parser as argparser
 from clients import ClientManager
 import config
-from keystoneauth1 import loading
-from keystoneauth1 import session
 from log import logging
-from novaclient import client as novaclient
 import time
 import utils
 
+from actions.cinder import create as volume_create
+from actions.cinder import delete as volume_delete
 from actions.glance import create as image_create
 from actions.glance import delete as image_delete
 from actions.nova import delete as server_delete
@@ -53,7 +52,7 @@ def test():
         password=conf.get('password'),
         project_id=conf.get('project_id')
     )
-    image_delete(clients, conf)
+    volume_delete(clients, conf)
 
 if __name__ == '__main__':
     run()

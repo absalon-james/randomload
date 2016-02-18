@@ -1,5 +1,6 @@
 from keystoneauth1 import loading
 from keystoneauth1 import session
+from cinderclient import client as cinderclient
 from novaclient import client as novaclient
 from glanceclient import Client as glanceclient
 
@@ -21,6 +22,7 @@ class ClientManager(object):
         self.session = None
         self.nova = None
         self.glance = None
+        self.cinder = None
         self.auth_url = auth_url
         self.username = username
         self.password = password
@@ -61,3 +63,14 @@ class ClientManager(object):
         if self.glance is None:
             self.glance = glanceclient(version, session=self.get_session())
         return self.glance
+
+    def get_cinder(self, version='2'):
+        """Get a cinder client instance.
+
+        :param version: String api version
+        :return: cinderclient.client.Client
+        """
+        if self.cinder is None:
+            self.cinder = cinderclient.Client(version,
+                                              session=self.get_session())
+        return self.cinder
