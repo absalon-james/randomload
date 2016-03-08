@@ -17,7 +17,14 @@ logger = logging.getLogger('randomload')
 
 def run():
     logger.info("Starting randomload...")
-    actions = [server_create, server_delete, image_create, image_delete]
+    actions = [
+        server_create,
+        server_delete,
+        image_create,
+        image_delete,
+        volume_create,
+        volume_delete
+    ]
     args = argparser.parse_args()
     conf = config.load(args.config_file)
     interval = conf.get('interval', 60)

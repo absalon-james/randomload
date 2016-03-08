@@ -10,6 +10,11 @@ from randomload.actions.nova import usage as server_usage
 # from randomload.actions.cinder import delete as volume_delete
 from randomload.actions.cinder import list as volume_list
 from randomload.actions.cinder import usage as volume_usage
+# from randomload.actions.glance import create as image_create
+# from randomload.actions.glance import delete as image_delete
+from randomload.actions.glance import list as image_list
+from randomload.actions.glance import usage as image_usage
+
 from randomload.args import parser as argparser
 from randomload.clients import ClientManager
 from randomload.log import logging
@@ -28,6 +33,7 @@ if __name__ == '__main__':
 
     server_list(clients, conf)
     volume_list(clients, conf)
+    image_list(clients, conf)
     logger.info("\n\n")
 
     now = datetime.datetime.utcnow()
@@ -37,6 +43,7 @@ if __name__ == '__main__':
     metadata = '{"color": "red"}'
     server_usage(clients, conf, start=start, end=end, metadata=metadata)
     volume_usage(clients, conf, start=start, end=end, metadata=metadata)
+    image_usage(clients, conf, start=start, end=end, metadata=metadata)
     logger.info("\n\n")
 
     end = now
@@ -44,6 +51,7 @@ if __name__ == '__main__':
     metadata = '{}'
     server_usage(clients, conf, start=start, end=end, metadata=metadata)
     volume_usage(clients, conf, start=start, end=end, metadata=metadata)
+    image_usage(clients, conf, start=start, end=end, metadata=metadata)
     logger.info("\n\n")
 
     end = now
@@ -51,4 +59,5 @@ if __name__ == '__main__':
     metadata = '{"color":"green","environment":"production"}'
     server_usage(clients, conf, start=start, end=end, metadata=metadata)
     volume_usage(clients, conf, start=start, end=end, metadata=metadata)
+    image_usage(clients, conf, start=start, end=end, metadata=metadata)
     logger.info("\n\n")

@@ -10,6 +10,8 @@ from randomload.args import parser as argparser
 from randomload.clients import ClientManager
 from randomload.log import logging
 
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 logger = logging.getLogger('randomload')
 logger.setLevel(logging.DEBUG)
 
