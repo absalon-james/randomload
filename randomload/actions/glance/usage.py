@@ -45,6 +45,8 @@ def bytes_to_GB(size_in_B):
     :param size: Numeric
     :returns: Float
     """
+    if size_in_B is None:
+        size_in_B = 0
     return float(size_in_B) / 1024 / 1024 / 1024
 
 
