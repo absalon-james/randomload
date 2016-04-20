@@ -3,6 +3,8 @@ auth_kwargs:
   username: yourusername
   password: yourpassword
   project_id: your_tenant_or_project_id
+  user_domain_name: your_user_domain_name
+  project_domain_name: your_project_domain_name
 
 # Time in seconds between each action
 interval: 60

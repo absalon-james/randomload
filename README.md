@@ -25,6 +25,9 @@ auth_kwargs:
   # Openstack project or tenant id
   project_id: your_tenant_or_project_id
 
+  user_domain_name: your_user_domain_name
+  project_domain_name: your_user_domain_name
+
 # Time in seconds between each action
 interval: 60
 
