@@ -1,7 +1,8 @@
-auth_url: http://auth_url:5000/v2.0
-username: yourusername
-password: yourpassword
-project_id: your_tenant_or_project_id
+auth_kwargs:
+  auth_url: http://auth_url:5000/v2.0
+  username: yourusername
+  password: yourpassword
+  project_id: your_tenant_or_project_id
 
 # Time in seconds between each action
 interval: 60
@@ -45,3 +46,20 @@ glance:
     - pear
     - grape
     - forty
+
+cinder:
+  # List of sizes to choose from in GB
+  sizes:
+    - 1
+    - 2
+
+  metadata:
+    color:
+      - red
+      - blue
+      - green
+    environment:
+      - dev
+      - test
+      - production
+

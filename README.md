@@ -12,17 +12,18 @@ The default location for the randomload yaml configuration is /etc/randomload/ra
 This can be changed with the command line argument '--config-file'.
 
 ```yaml
-# Usually something like http://some-ip:5000/v2.0
-auth_url: http://some-ip:5000/v2.0
+auth_kwargs:
+  # Usually something like http://some-ip:5000/v2.0
+  auth_url: http://some-ip:5000/v2.0
 
-# Openstack username
-username: yourusername
+  # Openstack username
+  username: yourusername
 
-# Openstack password
-password: yourpassword
+  # Openstack password
+  password: yourpassword
 
-# Openstack project or tenant id
-project_id: your_tenant_or_project_id
+  # Openstack project or tenant id
+  project_id: your_tenant_or_project_id
 
 # Time in seconds between each action
 interval: 60
@@ -64,4 +65,20 @@ glance:
     - pear
     - grape
     - forty
+
+cinder:
+  # List of sizes to choose from in GB
+  sizes:
+    - 1
+    - 2
+
+  metadata:
+    color:
+      - red
+      - blue
+      - green
+    environment:
+      - dev
+      - test
+      - production
 ```

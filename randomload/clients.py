@@ -10,8 +10,7 @@ class ClientManager(object):
 
     Operates with the intention of sharing one keystone auth session.
     """
-    def __init__(self, auth_url=None, username=None,
-                 password=None, project_id=None):
+    def __init__(self, **auth_kwargs):
         """Inits the client manager.
 
         :param auth_url: String keystone auth url
@@ -23,10 +22,7 @@ class ClientManager(object):
         self.nova = None
         self.glance = None
         self.cinder = None
-        self.auth_url = auth_url
-        self.username = username
-        self.password = password
-        self.project_id = project_id
+        self.auth_kwargs = auth_kwargs
 
     def get_session(self):
         """Get a keystone auth session.
@@ -35,12 +31,7 @@ class ClientManager(object):
         """
         if self.session is None:
             loader = loading.get_plugin_loader('password')
-            auth = loader.load_from_options(
-                auth_url=self.auth_url,
-                username=self.username,
-                password=self.password,
-                project_id=self.project_id
-            )
+            auth = loader.load_from_options(**self.auth_kwargs)
             self.session = session.Session(auth=auth)
         return self.session
 

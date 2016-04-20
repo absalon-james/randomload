@@ -17,12 +17,7 @@ logger = logging.getLogger('randomload')
 if __name__ == '__main__':
     args = argparser.parse_args()
     conf = config.load(args.config_file)
-    clients = ClientManager(
-        auth_url=conf.get('auth_url'),
-        username=conf.get('username'),
-        password=conf.get('password'),
-        project_id=conf.get('project_id')
-    )
+    clients = ClientManager(**conf.get('auth_kwargs', {}))
 
     server_list(clients, conf)
 

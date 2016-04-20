@@ -29,12 +29,7 @@ def run():
     conf = config.load(args.config_file)
     interval = conf.get('interval', 60)
 
-    clients = ClientManager(
-        auth_url=conf.get('auth_url'),
-        username=conf.get('username'),
-        password=conf.get('password'),
-        project_id=conf.get('project_id')
-    )
+    clients = ClientManager(**conf.get('auth_kwargs', {}))
 
     last_action_time = 0
     while True:
@@ -53,12 +48,8 @@ def test():
     logger.info("Starting test...")
     args = argparser.parse_args()
     conf = config.load(args.config_file)
-    clients = ClientManager(
-        auth_url=conf.get('auth_url'),
-        username=conf.get('username'),
-        password=conf.get('password'),
-        project_id=conf.get('project_id')
-    )
+    auth_kwargs = config.get('auth_kwargs', {})
+    clients = ClientManager(**config.get('auth_kwargs', {}))
     volume_delete(clients, conf)
 
 if __name__ == '__main__':
