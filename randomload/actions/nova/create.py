@@ -20,7 +20,7 @@ def create(clients, conf=None):
     flavor = utils.randomfromlist(nova_conf.get('flavors', []))
     flavor = nova.flavors.get(flavor)
     image = utils.randomfromlist(nova_conf.get('images', []))
-    name = utils.randomname()
+    name = utils.randomname(nova_conf.get('name_prefix', 'random'))
     meta = {}
     possible_metadata = nova_conf.get('metadata', {})
     for metakey, valuelist in possible_metadata.items():

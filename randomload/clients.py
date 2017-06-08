@@ -1,3 +1,4 @@
+import copy
 from keystoneauth1 import loading
 from keystoneauth1 import session
 from cinderclient import client as cinderclient
@@ -31,7 +32,10 @@ class ClientManager(object):
         """
         if self.session is None:
             loader = loading.get_plugin_loader('password')
-            auth = loader.load_from_options(**self.auth_kwargs)
+            kwargs = copy.copy(self.auth_kwargs)
+            if 'endpoint_type' in kwargs:
+                kwargs.pop('endpoint_type')
+            auth = loader.load_from_options(**kwargs)
             self.session = session.Session(auth=auth)
         return self.session
 
@@ -42,7 +46,10 @@ class ClientManager(object):
         :returns: novaclient.client.Client
         """
         if self.nova is None:
-            self.nova = novaclient.Client(version, session=self.get_session())
+            kwargs = {'session': self.get_session()}
+            if 'endpoint_type' in self.auth_kwargs:
+                kwargs['endpoint_type'] = self.auth_kwargs['endpoint_type']
+            self.nova = novaclient.Client(version, **kwargs)
         return self.nova
 
     def get_glance(self, version='2'):
@@ -62,6 +69,8 @@ class ClientManager(object):
         :return: cinderclient.client.Client
         """
         if self.cinder is None:
-            self.cinder = cinderclient.Client(version,
-                                              session=self.get_session())
+            kwargs = {'session': self.get_session()}
+            if 'endpoint_type' in self.auth_kwargs:
+                kwargs['endpoint_type'] = self.auth_kwargs['endpoint_type']
+            self.cinder = cinderclient.Client(version, **kwargs)
         return self.cinder
