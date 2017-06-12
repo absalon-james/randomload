@@ -5,13 +5,12 @@ logger = logging.getLogger('randomload.actions.glance.list')
 
 
 def _property(image, prop):
-    return image.get(prop, None)
+    return image.properties.get(prop, None)
 
 
 def list(clients, conf, **properties):
     logger.info("Listing active images")
-    glance = clients.get_glance()
-    images = glance.images.list(**properties)
+    images = clients.image.images.list(**properties)
     for i in images:
         logger.info(
             "{0} - {1} - {2} - {3}"

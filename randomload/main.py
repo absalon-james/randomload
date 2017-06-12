@@ -1,5 +1,5 @@
 from args import parser as argparser
-from clients import ClientManager
+from clients import clients as openstack_clients
 import config
 from log import logging
 import time
@@ -23,13 +23,13 @@ def run():
         image_create,
         image_delete,
         volume_create,
-        volume_delete
+        volume_delete,
     ]
     args = argparser.parse_args()
     conf = config.load(args.config_file)
     interval = conf.get('interval', 60)
 
-    clients = ClientManager(**conf.get('auth_kwargs', {}))
+    clients = openstack_clients()
 
     last_action_time = 0
     while True:
@@ -38,19 +38,11 @@ def run():
             action = utils.randomfromlist(actions)
             try:
                 action(clients, conf=conf)
-            except Exception as e:
-                print e
+            except Exception:
+                logger.exception("Unable to perform action:")
             last_action_time = time.time()
         time.sleep(1)
 
-
-def test():
-    logger.info("Starting test...")
-    args = argparser.parse_args()
-    conf = config.load(args.config_file)
-    auth_kwargs = config.get('auth_kwargs', {})
-    clients = ClientManager(**config.get('auth_kwargs', {}))
-    volume_delete(clients, conf)
 
 if __name__ == '__main__':
     run()

@@ -11,7 +11,6 @@ def delete(clients, conf=None):
     :param conf: Dict
     """
     logger.info("Taking action delete")
-    cinder = clients.get_cinder()
     if conf is None:
         conf = {}
 
@@ -21,11 +20,11 @@ def delete(clients, conf=None):
         },
         'status': 'available'
     }
-    volumes = cinder.volumes.list(search_opts=search_opts)
+    volumes = clients.volume.volumes.list(search_opts=search_opts)
     if not volumes:
         logger.info("Nothing to delete.")
     else:
         volume = utils.randomfromlist(volumes)
-        cinder.volumes.delete(volume)
+        clients.volume.volumes.delete(volume)
         logger.info("Deleted volume {0} - {1} - {2}"
                     .format(volume.name, volume.size, volume.metadata))

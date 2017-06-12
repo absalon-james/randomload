@@ -1,76 +1,42 @@
-import copy
-from keystoneauth1 import loading
-from keystoneauth1 import session
-from cinderclient import client as cinderclient
-from novaclient import client as novaclient
-from glanceclient import Client as glanceclient
+from log import logging
+from osc_lib import clientmanager
+from os_client_config import config as cloud_config
+from openstackclient.common.clientmanager import PLUGIN_MODULES
+
+logger = logging.getLogger('randomload.clients')
 
 
-class ClientManager(object):
-    """Object that manages multiple openstack clients.
+class _ClientManager:
 
-    Operates with the intention of sharing one keystone auth session.
-    """
-    def __init__(self, **auth_kwargs):
-        """Inits the client manager.
+    def __init__(self):
+        self._instance = None
 
-        :param auth_url: String keystone auth url
-        :param username: String openstack username
-        :param password: String openstack password
-        :param project_id: String project_id - Tenant uuid
+    def __call__(self):
+        """Get an instance of the openstack client manager.
+
+        :returns: Instance of client manager
+        :rtype: osc_lib.clientmanager.ClientManager
         """
-        self.session = None
-        self.nova = None
-        self.glance = None
-        self.cinder = None
-        self.auth_kwargs = auth_kwargs
+        if self._instance is None:
+            cc = cloud_config.OpenStackConfig()
+            cloud = cc.get_one_cloud()
+            api_version = {}
+            for mod in PLUGIN_MODULES:
+                default_version = getattr(mod, 'DEFAULT_API_VERSION', None)
+                version_opt = str(default_version)
+                if version_opt:
+                    api = mod.API_NAME
+                    api_version[api] = version_opt
 
-    def get_session(self):
-        """Get a keystone auth session.
+            api_version['image'] = '2'
 
-        :returns: keystoneauth1.session.Session
-        """
-        if self.session is None:
-            loader = loading.get_plugin_loader('password')
-            kwargs = copy.copy(self.auth_kwargs)
-            if 'endpoint_type' in kwargs:
-                kwargs.pop('endpoint_type')
-            auth = loader.load_from_options(**kwargs)
-            self.session = session.Session(auth=auth)
-        return self.session
+            cm = clientmanager.ClientManager(
+                cli_options=cloud,
+                api_version=api_version
+            )
+            cm.setup_auth()
+            self._instance = cm
+        return self._instance
 
-    def get_nova(self, version='2.1'):
-        """Get a nova client instance.
 
-        :param version: String api version
-        :returns: novaclient.client.Client
-        """
-        if self.nova is None:
-            kwargs = {'session': self.get_session()}
-            if 'endpoint_type' in self.auth_kwargs:
-                kwargs['endpoint_type'] = self.auth_kwargs['endpoint_type']
-            self.nova = novaclient.Client(version, **kwargs)
-        return self.nova
-
-    def get_glance(self, version='2'):
-        """Get a glance client instance.
-
-        :param version: String api version
-        :return: glanceclient.Client
-        """
-        if self.glance is None:
-            self.glance = glanceclient(version, session=self.get_session())
-        return self.glance
-
-    def get_cinder(self, version='2'):
-        """Get a cinder client instance.
-
-        :param version: String api version
-        :return: cinderclient.client.Client
-        """
-        if self.cinder is None:
-            kwargs = {'session': self.get_session()}
-            if 'endpoint_type' in self.auth_kwargs:
-                kwargs['endpoint_type'] = self.auth_kwargs['endpoint_type']
-            self.cinder = cinderclient.Client(version, **kwargs)
-        return self.cinder
+clients = _ClientManager()

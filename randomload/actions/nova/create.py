@@ -12,13 +12,12 @@ def create(clients, conf=None):
     :param conf: Configuration
     """
     logger.info("Taking action create")
-    nova = clients.get_nova()
     if conf is None:
         conf = {}
 
     nova_conf = conf.get('nova')
     flavor = utils.randomfromlist(nova_conf.get('flavors', []))
-    flavor = nova.flavors.get(flavor)
+    flavor = clients.compute.flavors.get(flavor)
     image = utils.randomfromlist(nova_conf.get('images', []))
     name = utils.randomname(nova_conf.get('name_prefix', 'random'))
     meta = {}
@@ -28,4 +27,4 @@ def create(clients, conf=None):
 
     msg = ("Creating {0} - {1} with image {2} with metadata {3}")
     logger.info(msg.format(name, flavor, image, meta))
-    nova.servers.create(name, image, flavor, meta=meta)
+    clients.compute.servers.create(name, image, flavor, meta=meta)

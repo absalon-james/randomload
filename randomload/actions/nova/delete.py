@@ -11,13 +11,12 @@ def delete(clients, conf=None):
     :param conf: Dict
     """
     logger.info("Taking action delete")
-    nova = clients.get_nova()
     if conf is None:
         conf = {}
-    l = nova.servers.list(search_opts={'status': 'active'})
+    l = clients.compute.servers.list(search_opts={'status': 'active'})
     s = utils.randomfromlist(l)
     if s:
         logger.info("Deleting {0} ...".format(s))
-        nova.servers.delete(s)
+        clients.compute.servers.delete(s)
     else:
         logger.info("Nothing to delete.")

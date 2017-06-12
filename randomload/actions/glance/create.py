@@ -14,7 +14,8 @@ def create(clients, conf=None):
     if conf is None:
         conf = {}
     glance_conf = conf.get('glance', {})
-    glance = clients.get_glance()
+
+    logger.info("Type of glance client: {}".format(type(clients.image)))
 
     name = utils.randomname(prefix='random-image')
     imagedict = utils.randomfromlist(glance_conf.get('images'))
@@ -28,16 +29,8 @@ def create(clients, conf=None):
     for metakey, valuelist in possible_metadata.items():
         kwargs[metakey] = utils.randomfromlist(valuelist)
 
-    image = glance.images.create(**kwargs)
+    image = clients.image.images.create(**kwargs)
 
-    glance.images.upload(image.id, open(imagedict.get('file'), 'rb'))
+    clients.image.images.upload(image.id, open(imagedict.get('file'), 'rb'))
     logger.info("Created image {0}".format(image.name))
-
-    # Add a tag to identify image as one created by randomload
-    # tag = 'randomload'
-    # glance.image_tags.update(image.id, 'randomload')
-
-    # Randomly sample from available random tags
-    # extra_tags = utils.randomsample(glance_conf.get('tags', []), 2)
-    # for t in extra_tags:
-    #    glance.image_tags.update(image.id, t)
+    return image

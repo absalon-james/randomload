@@ -12,7 +12,6 @@ def create(clients, conf=None):
     :param conf: Configuration
     """
     logger.info("Taking action create")
-    cinder = clients.get_cinder()
     if conf is None:
         conf = {}
     cinderconf = conf.get('cinder', {})
@@ -25,6 +24,7 @@ def create(clients, conf=None):
     for metakey, valuelist in possible_metadata.items():
         meta[metakey] = utils.randomfromlist(valuelist)
 
-    volume = cinder.volumes.create(name=name, size=size, metadata=meta)
+    volume = clients.volume.volumes.create(name=name, size=size, metadata=meta)
     logger.info("Created volume {0} with metadata {1}"
                 .format(volume.name, volume.metadata))
+    return volume
