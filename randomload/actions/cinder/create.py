@@ -16,7 +16,8 @@ def create(clients, conf=None):
         conf = {}
     cinderconf = conf.get('cinder', {})
 
-    name = utils.randomname(prefix='random-volume')
+    prefix = cinderconf.get('name_prefix', 'random-volume')
+    name = utils.randomname(prefix=prefix)
     size = utils.randomfromlist(cinderconf.get('sizes', [1]))
 
     meta = {'app': 'randomload'}

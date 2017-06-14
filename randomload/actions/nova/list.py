@@ -1,7 +1,7 @@
 """This is just a playing around module. Please ignore it"""
 from randomload.log import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('randomload.actions.nova.list')
 
 
 def list(clients, conf):

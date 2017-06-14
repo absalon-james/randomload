@@ -5,7 +5,7 @@ logger = logging.getLogger('randomload.actions.glance.list')
 
 
 def _property(image, prop):
-    return image.properties.get(prop, None)
+    return image.get(prop, None)
 
 
 def list(clients, conf, **properties):

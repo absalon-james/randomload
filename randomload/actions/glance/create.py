@@ -15,9 +15,8 @@ def create(clients, conf=None):
         conf = {}
     glance_conf = conf.get('glance', {})
 
-    logger.info("Type of glance client: {}".format(type(clients.image)))
-
-    name = utils.randomname(prefix='random-image')
+    prefix = glance_conf.get('name_prefix', 'random-image')
+    name = utils.randomname(prefix=prefix)
     imagedict = utils.randomfromlist(glance_conf.get('images'))
     kwargs = {
         'name': name,
