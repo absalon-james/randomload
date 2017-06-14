@@ -26,6 +26,8 @@ def load_actions(action_set, chosen_actions):
 
 def run():
     args = parser.parse_args()
+    if args.debug:
+        logger.setLevel(logging.DEBUG)
     logger.debug("Using configuration file: {}".format(args.config_file))
     logger.debug("Using action set: {}".format(args.action_set))
 
