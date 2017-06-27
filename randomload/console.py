@@ -10,7 +10,20 @@ logger = logging.getLogger('randomload')
 
 
 def load_actions(action_set, chosen_actions):
+    """Assemble a list of actions that will be randomly chosen from.
 
+    Step 1 is to get a set of actions.
+    These will be all, create, delete, read, write.
+    Step 2 is to only include the chosen actions from the set of actions.
+    If no chosen actions are provided, then return all of the action set.
+
+    :param action_set: Name of an action set. (all, create, ...)
+    :type action_set: str
+    :param chosen_actions: List of explicitly chosen actions.
+    :type chosen_actions: list
+    :return: List of action function objects.
+    :rtype: list
+    """
     action_set = actions.SETS.get(action_set)
     if chosen_actions:
         action_set = {
@@ -25,9 +38,15 @@ def load_actions(action_set, chosen_actions):
 
 
 def run():
+    """Main loop of the console script.
+
+    At each interval, choose a random action.
+    CTRL + C should break it.
+    """
     args = parser.parse_args()
     if args.debug:
         logger.setLevel(logging.DEBUG)
+
     logger.debug("Using configuration file: {}".format(args.config_file))
     logger.debug("Using action set: {}".format(args.action_set))
 
@@ -52,5 +71,5 @@ def run():
     except KeyboardInterrupt:
         logger.info("Exiting...")
 
-if __name__ == '__main__':
-    run()
+#if __name__ == '__main__':
+#    run()
