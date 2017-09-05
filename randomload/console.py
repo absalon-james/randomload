@@ -70,6 +70,3 @@ def run():
         time.sleep(1)
     except KeyboardInterrupt:
         logger.info("Exiting...")
-
-#if __name__ == '__main__':
-#    run()

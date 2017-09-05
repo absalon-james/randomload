@@ -2,6 +2,11 @@ from setuptools import setup
 
 from randomload.meta import version
 
+entry_points = """
+    [console_scripts]
+    randomload=randomload.console:run
+"""
+
 setup(
     name="randomload",
     version=version,
@@ -18,5 +23,6 @@ setup(
                       "servers on OpenStack."),
     data_files=[
         ('/etc/randomload', ['randomload.yaml'])
-    ]
+    ],
+    entry_points=entry_points
 )
